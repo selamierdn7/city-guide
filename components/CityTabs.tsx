@@ -126,9 +126,20 @@ function GalleryCard({ item }: { item: Item }) {
 
                 {/* Sabit Footer Butonu */}
                 <div className="pt-4 border-t border-gray-100 mt-auto">
-                    <button className="text-blue-600 text-sm font-bold hover:underline flex items-center gap-1">
-                        Konumunu Haritada Gör &rarr;
-                    </button>
+                    {item.mapsUrl ? (
+                        <a
+                            href={item.mapsUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 text-sm font-bold hover:underline flex items-center gap-1 w-fit"
+                        >
+                            📍 Konumunu Haritada Gör &rarr;
+                        </a>
+                    ) : (
+                        <span className="text-gray-400 text-sm cursor-not-allowed flex items-center gap-1">
+                            🚫 Konum bilgisi yok
+                        </span>
+                    )}
                 </div>
             </div>
         </div>
