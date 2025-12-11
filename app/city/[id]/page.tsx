@@ -1,7 +1,7 @@
-import { cities } from '@/data';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import CityTabs from '@/components/CityTabs'; // Yeni bileşenimizi çağırdık
+import CityTabs from '@/components/CityTabs';
+import { getCity } from '@/lib/db'; // YENİ: Veritabanı fonksiyonu
 
 interface PageProps {
     params: Promise<{ id: string }>;
@@ -11,15 +11,17 @@ export default async function CityDetail({ params }: PageProps) {
     const resolvedParams = await params;
     const cityId = resolvedParams.id;
 
-    const city = cities.find((c) => c.id.toLowerCase() === cityId.toLowerCase());
+    // YENİ: Veritabanından tek bir şehri çekiyoruz
+    // (Artık .find() ile aramak yok, direkt ID ile soruyoruz)
+    const city = await getCity(cityId);
 
     if (!city) {
-        notFound();
+        return notFound();
     }
 
     return (
         <main className="min-h-screen bg-slate-50 pb-20">
-            {/* --- HERO BÖLÜMÜ (Sabit Kalacak) --- */}
+            {/* Hero Bölümü */}
             <div className="relative h-[60vh] w-full">
                 <img
                     src={city.coverImage}
@@ -43,12 +45,9 @@ export default async function CityDetail({ params }: PageProps) {
                 </Link>
             </div>
 
-            {/* --- İÇERİK ALANI (Dinamik Kısım) --- */}
+            {/* İçerik Alanı */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 -mt-16 relative z-10">
-
-                {/* Yeni Tabs Bileşenini Buraya Koyuyoruz */}
                 <CityTabs items={city.items} />
-
             </div>
         </main>
     );
