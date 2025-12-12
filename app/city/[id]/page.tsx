@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import CityTabs from '@/components/CityTabs';
 import { getCity } from '@/lib/db'; // YENİ: Veritabanı fonksiyonu
 
+export const dynamic = "force-dynamic"
+
 interface PageProps {
     params: Promise<{ id: string }>;
 }
